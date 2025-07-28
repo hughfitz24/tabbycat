@@ -34,6 +34,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_CI: true
     steps:
       - uses: actions/checkout@v4
       - name: Python setup
