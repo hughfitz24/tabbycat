@@ -23,6 +23,6 @@ jobs:
           pre-commit run --all-files
       - name: Install test dependencies
         run: |
-          pip install pytest pytest-djano pytest-cov
+          pip install pytest pytest-django pytest-cov
       - name: Run tests, get coverage reports
         run: pytest --cov=tabbycat --cov-report=xml --cov-report=term
