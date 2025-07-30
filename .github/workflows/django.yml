@@ -72,25 +72,18 @@ jobs:
         python ./tabbycat/manage.py collectstatic --noinput -v 0
     - name: Run migrations
       run: python ./tabbycat/manage.py migrate
-    - name: Run tests
-      run: python tabbycat/manage.py test -v 2 --exclude-tag=selenium
-    - name: Generate coverage report
+    - name: Run tests and generate coverage reports
       run: |
         pip install coverage # Install in CI only, not needed as Pipenv dependency
-        coverage run --source='tabbycat' tabbycat/manage.py test
+        coverage run --source='tabbycat' tabbycat/manage.py test -v 2 --exclude-tag=selenium
         coverage xml
         coverage report
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
       if: success()
       with:
-        file: ./tabbycat/coverage.xml
-        fail_ci_if_error: false
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      if: success()
-      with:
         file: ./coverage.xml
+        fail_ci_if_error: false
 
   build-docker-dev:
 
