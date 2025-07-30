@@ -85,6 +85,20 @@ jobs:
         file: ./coverage.xml
         token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: false
+    - name: Install Reviewdog
+      run: |
+        curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b ./bin
+        echo "$(pwd)/bin" >> $GITHUB_PATH
+
+    - name: Run pre-commit with Reviewdog
+      env:
+        REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        pre-commit run --all-files --show-diff-on-failure \
+          | ./bin/reviewdog -f=diff \
+            -name="pre-commit" \
+            -reporter=github-pr-review \
+            -fail-on-error=false
 
   build-docker-dev:
 
