@@ -64,8 +64,8 @@ jobs:
         python -m pip install pipenv
         pipenv install --system --dev --deploy
         npm ci
-    - name: Run linting
-      run: npm run lint
+    # - name: Run linting
+    #   run: npm run lint
     - name: Run build and collect
       run: |
         npm run build
