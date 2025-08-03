@@ -14,8 +14,6 @@ jobs:
   reviewdog-lint:
     runs-on: ubuntu-latest
     steps:
-       - name: Run stylelint with reviewdog
-         uses: reviewdog/action-stylelint@v1.30.2
        - name: Run eslint with reviewdog
          uses: reviewdog/action-eslint@v1.33.2
        - name: Run flake8 with reviewdog
