@@ -3,18 +3,55 @@ name: Reviewdog Linting
 on:
   push:
     branches:
-    - 'develop'
-    - 'master'
+      - develop
+      - master
   pull_request:
     branches:
-    - '**'
-    - '!l10n_develop'
+      - '**'
+      - '!l10n_develop'
 
 jobs:
   reviewdog-lint:
     runs-on: ubuntu-latest
+
     steps:
-       - name: Run eslint with reviewdog
-         uses: reviewdog/action-eslint@v1.33.2
-       - name: Run flake8 with reviewdog
-         uses: reviewdog/action-flake8@v3.15.2
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Python setup
+        uses: actions/setup-python@v4
+        with:
+          python-version-file: '.python-version'
+
+      - name: Cache pipenv dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pipenv-
+
+      - name: Node setup
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          pip install pre-commit
+          npm ci
+
+      - name: Run ESLint with ReviewDog
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          level: warning
+
+      - name: Run Flake8 with ReviewDog
+        uses: reviewdog/action-flake8@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          level: warning
