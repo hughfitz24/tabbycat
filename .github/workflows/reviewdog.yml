@@ -40,6 +40,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pre-commit
+          pre-commit install
           npm ci
 
       - name: Run ESLint with ReviewDog
