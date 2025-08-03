@@ -43,14 +43,14 @@ jobs:
           npm ci
 
       - name: Run ESLint with ReviewDog
-        uses: reviewdog/action-eslint@v1
+        uses: reviewdog/action-eslint@v1.33.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
           level: warning
 
       - name: Run Flake8 with ReviewDog
-        uses: reviewdog/action-flake8@v1
+        uses: reviewdog/action-flake8@v3.15.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
