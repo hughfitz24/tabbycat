@@ -1,0 +1,22 @@
+name: Reviewdog Linting
+
+on:
+  push:
+    branches:
+    - 'develop'
+    - 'master'
+  pull_request:
+    branches:
+    - '**'
+    - '!l10n_develop'
+
+jobs:
+  reviewdog-lint:
+    runs-on: ubuntu-latest
+    steps:
+       - name: Run stylelint with reviewdog
+         uses: reviewdog/action-stylelint@v1.30.2
+       - name: Run eslint with reviewdog
+         uses: reviewdog/action-eslint@v1.33.2
+       - name: Run flake8 with reviewdog
+         uses: reviewdog/action-flake8@v3.15.2
